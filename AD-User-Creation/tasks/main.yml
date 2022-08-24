@@ -2,5 +2,4 @@
 # tasks file for AD-User-Creation
 
 - import_tasks: AD-installation.yml
-- import_tasks: AD-Workgroup-User-Creation.yml
-- import_tasks: AD-Domain-User-Creation.yml
+- import_tasks: AD-Domain-Workgroup-User-Creation.yml
