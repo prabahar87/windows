@@ -1,34 +1,33 @@
 ---
 - block:
-    - name: "Ensure the system is joined in domain or workgroup."
+    - name: "Validate if the computer is part of domain or workgroup."
       debug:
-        msg: "This machine joined in - {{ ansible_windows_domain }}"
+        msg: "This machine is part of - {{ ansible_windows_domain }}"
 
-    - name: "Validating the User Status"
+    - name: "Validate the user account existence"
       win_user:
         name: "{{ Win_Local_User }}"
         state: query
       register: user_status
 
-    - name: "Failure User Status"
+    - name: "Error Handler for failure event - queried user do not exist"
       debug:
-        msg: "User is not there"
+        msg: "User do not exist. Creating the user account.."
       when: user_status.state != "present"
   
-    - name: "Success User Status"
+    - name: "Error Handler for success event - queried user exist"
       debug:
-        msg: "User is there"
+        msg: "User already exists..!"
       when: user_status.state == "present"
     
     rescue:
       
-      - name: "Creating the Local User"
+      - name: "Create the user account"
         win_user:
           name: "{{ Win_Local_User }}"
           state: present
         when: user_status.state != "present"
 
-      - name: "Ensure the system is joined in domain or workgroup."
+      - name: "Error Handler for success event - User creation is successful"
         debug:
-          msg: "{{ Win_Local_User }} is successfully created and assigned with  - {{ ansible_windows_domain }} Workgroup"
-
+          msg: "{{ Win_Local_User }} is successfully created..!"
