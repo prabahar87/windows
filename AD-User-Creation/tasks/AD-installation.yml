@@ -1,31 +1,30 @@
 ---
 - block:
 
-    - name: "Ensure the module is exist or not."
+    - name: "Retrieve the installation status of active directory module"
       win_shell: "{{ Win_Shell_Module_Command }}" -ListAvailable|Where Name -eq "{{ Win_Shell_Module_Name }}"
       register: module_validate
 
-    - name: "Validating the module is exist or not."
+    - name: "Validate the installation status of active directory module"
       fail:
-        msg: "{{ Win_Shell_Module_Name }} feature is not enabled/available in the machine."
+        msg: "{{ Win_Shell_Module_Name }} module is currenlty not installed. Proceeding with the installation..."
       when: "module_validate.stdout_lines | length < 1"
 
-    - name: "Debug Message For existed."
+    - name: "Error Handler success event for AD module validation."
       debug:
-         msg: "{{ Win_Shell_Module_Name }} feature already enabled..!"
+         msg: "{{ Win_Shell_Module_Name }} module already exists..!"
        
     rescue:
 
-     - name: "Installation on Active Directory"
+     - name: "Install Active Directory Module"
        win_feature:
          name: "{{ Win_Package_Name }}"
          state: "{{ Win_State }}"
        when: "module_validate.stdout_lines | length < 1"
 
-     - name: "Success Message"
+     - name: "Error Handler success event for AD module installation"
        assert:
          that: 
            - module_validate.stdout_lines | length < 1
-         fail_msg: "Not properly Installted the Required {{ Win_Shell_Module_Name }} Package..!"
-         success_msg: " Installed the Required {{ Win_Shell_Module_Name }} package..!"
-
+         fail_msg: "Failed to install the {{ Win_Shell_Module_Name }} module"
+         success_msg: "Successfully installed the {{ Win_Shell_Module_Name }} module..!"
