@@ -1,0 +1,12 @@
+---
+# vars file for AD-User-Creation
+
+Win_Package_Name: RSAT-AD-PowerShell
+Win_State: present
+
+Win_Shell_Module_Command: Get-Module
+Win_Shell_Module_Name: ActiveDirectory
+
+
+Win_Local_User:
+
