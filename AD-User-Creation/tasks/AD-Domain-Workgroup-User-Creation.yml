@@ -40,7 +40,7 @@
     path: "{{ Win_Domain_Path }}"
     password: "{{ Win_Pass }}"
     domain_username: "{{ Win_Domain_User }}"
-    domain_password: "{{ Win Domain_Pass }}"
+    domain_password: "{{ Win_Domain_Pass }}"
     enabled: yes
     password_never_expires: yes
     upn: {{ Win_Local_User }}@{{ ansible_windows_domain }}
