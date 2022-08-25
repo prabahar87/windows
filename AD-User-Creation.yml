@@ -1,5 +1,6 @@
 ---
 - hosts: win
+  gather_facts: true
   roles:
       - AD-User-Creation
-        #- AD-User-Final
+        
