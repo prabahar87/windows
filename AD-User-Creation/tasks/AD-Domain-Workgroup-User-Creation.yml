@@ -33,21 +33,21 @@
            {% endif %}
 
 
-- name: "Creating the Local User Account."
+- name: "Creating the Domain User Account."
   win_domain_user:
     name: "{{ Win_Local_User }}"
     sam_account_name: "{{ Win_Local_User }}"
-    path: CN=Users,DC=remotely,DC=in
-    password: Pa55w0rd
-    domain_username: remotely.in\dmadmin
-    domain_password: Pa55w0rd
+    path: "{{ Win_Domain_Path }}"
+    password: "{{ Win_Pass }}"
+    domain_username: "{{ Win_Domain_User }}"
+    domain_password: "{{ Win Domain_Pass }}"
     enabled: yes
     password_never_expires: yes
-    upn: Remotely2@{{ ansible_windows_domain }}
+    upn: {{ Win_Local_User }}@{{ ansible_windows_domain }}
     state: present
   when: user_status.state != "present"
 
-- name: "Creating the Domain User Account."
+- name: "Creating the Local User Account."
   win_user:
     name: "{{ Win_Local_User }}"
     state: present
