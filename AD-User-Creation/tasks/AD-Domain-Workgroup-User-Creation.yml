@@ -1,6 +1,6 @@
 ---
 - block:
-    - name: "Ensure the system is joined in domain or workgroup."
+    - name: "Validate if the computer is part of domain or workgroup."
       debug:
         msg: |
            {% if "{{ ansible_windows_domain_member }}" == 'false' %}
@@ -9,55 +9,72 @@
                  This machine joined in - "{{ ansible_windows_domain }}"
            {% endif %}
 
-    - name: "Validating the User Status."
+    - name: "Validate the Local user account existence."
       win_user:
         name: "{{ Win_Local_User }}"
         state: query
       register: user_status
       when: ansible_windows_domain_member == "false"
 
-    - name: User Status - Domain
+    - name: "Validate the Domain user account existence."
       win_domain_user:
-        name: remotely
+        name: "{{ Win_Local_User }}"
         state: query
       register: user_status
       when: ansible_windows_domain_member != "false"
 
-    - name: "Failure User Status."
-      debug:
-        msg: "User is not there"
-      when: user_status.state != "present"
-
-    - name: "Success User Status."
-      debug:
-        msg: "User is there"
-      when: user_status.state == "present"
-
-  rescue:
-
-    - name: "Creating the Domain User."
-      win_domain_user:
-        name: "{{ Win_Local_User }}"
-        state: present
-      when: 
-        - user_status.state != "present"
-        - ansible_windows_domain_member != "false"
-    
-    - name: "Creating the Local User."
-      win_user:
-        name: "{{ Win_Local_User }}"
-        state: present
-      when:
-        - user_status.state != "present"
-        - ansible_windows_domain_member == "false"
-
-    - name: Ensure the system is joined in domain or workgroup.
+    - name: "Error Handler for Failure/Success event - queried user do not exist."
       debug:
         msg: |
-           {% if "{{  user_status.state}}" == 'present' %}
-                 User Successfully Created...!
+           {% if "{{  user_status.state }}" == 'present' %}
+           User already exists..!
            {% else %}
-                 Couldn't Create the User...!
+           User do not exist. Creating the user account..!
            {% endif %}
 
+
+- name: "Creating the Local User Account."
+  win_domain_user:
+    name: "{{ Win_Local_User }}"
+    sam_account_name: "{{ Win_Local_User }}"
+    path: CN=Users,DC=remotely,DC=in
+    password: Pa55w0rd
+    domain_username: remotely.in\dmadmin
+    domain_password: Pa55w0rd
+    enabled: yes
+    password_never_expires: yes
+    upn: Remotely2@{{ ansible_windows_domain }}
+    state: present
+  when: user_status.state != "present"
+
+- name: "Creating the Domain User Account."
+  win_user:
+    name: "{{ Win_Local_User }}"
+    state: present
+  when:
+    - user_status.state != "present"
+    - ansible_windows_domain_member == "false"
+
+- name: "Validate the Local user account existence."
+  win_user:
+    name: "{{ Win_Local_User }}"
+    state: query
+  register: final_result
+  when: ansible_windows_domain_member == "false"
+
+- name: "Validate the Domain user account existence."
+  win_domain_user:
+    name: "{{ Win_Local_User }}"
+    state: query
+  register: final_result
+  when: ansible_windows_domain_member != "false"
+
+- name: "Error Handler for Failure/Success event - queried user do not exist."
+  debug:
+    msg: |
+      {% if "{{ ansible_windows_domain_member }}" == 'false' %}
+      Couldn't Create the User...!
+      {% else %}
+      User is Created/Already existed the account...!
+      {% endif %}
 
