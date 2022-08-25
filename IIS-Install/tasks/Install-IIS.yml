@@ -1,5 +1,5 @@
 ---
-- name: "Check if a service is installed."
+- name: "Check if IIS service is configured."
   win_service:
     name: IISAdmin
   register: service_info
@@ -8,12 +8,12 @@
   debug:
     msg: |
       {% if "{{ service_info.exists }}" == 'false' %}
-      IIS-Service is not yet installed...
+      IIS-Service is not installed. Enabling the feature...
       {% else %}
-      IIS-Service is already installed on this system..
+      IIS-Service already exists..!
       {% endif %}
 
-- name: "Install IIS Web-Server with sub features and management tools."
+- name: "Install IIS feature and management tools."
   win_feature:
     name: Web-Server
     state: present
@@ -22,13 +22,13 @@
   register: win_feature
   when: service_info.exists != "false"
 
-- name: "Error Handler Success/Failure Event for IIS-Service."
+- name: "Error Handler Success/Failure Event for IIS installation."
   debug:
     msg: |
       {% if "{{ win_feature.state }}" == 'running' %}
-      IIS-Service is succeessfully installed and it's running..
+      IIS is succeessfully installed..!
       {% else %}
-      IIS-Service is not properly installed..
+      IIS installation failed.
       {% endif %}
 
 
