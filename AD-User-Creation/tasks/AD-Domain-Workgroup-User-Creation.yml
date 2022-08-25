@@ -73,8 +73,8 @@
   debug:
     msg: |
       {% if "{{ ansible_windows_domain_member }}" == 'false' %}
-      Couldn't Create the User...!
+      User creation task failed.
       {% else %}
-      User is Created/Already existed the account...!
+      User is created successfully...!
       {% endif %}
 
