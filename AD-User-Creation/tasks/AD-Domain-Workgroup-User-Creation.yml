@@ -11,14 +11,14 @@
 
     - name: "Validate the Local user account existence."
       win_user:
-        name: "{{ Win_Local_User }}"
+        name: "{{ Win_User }}"
         state: query
       register: user_status
       when: ansible_windows_domain_member == "false"
 
     - name: "Validate the Domain user account existence."
       win_domain_user:
-        name: "{{ Win_Local_User }}"
+        name: "{{ Win_User }}"
         state: query
       register: user_status
       when: ansible_windows_domain_member != "false"
@@ -35,8 +35,8 @@
 
 - name: "Creating the Domain User Account."
   win_domain_user:
-    name: "{{ Win_Local_User }}"
-    sam_account_name: "{{ Win_Local_User }}"
+    name: "{{ Win_User }}"
+    sam_account_name: "{{ Win_User }}"
     path: "{{ Win_Domain_Path }}"
     password: "{{ Win_Pass }}"
     domain_username: "{{ Win_Domain_User }}"
@@ -49,7 +49,7 @@
 
 - name: "Creating the Local User Account."
   win_user:
-    name: "{{ Win_Local_User }}"
+    name: "{{ Win_User }}"
     state: present
   when:
     - user_status.state != "present"
@@ -57,14 +57,14 @@
 
 - name: "Validate the Local user account existence."
   win_user:
-    name: "{{ Win_Local_User }}"
+    name: "{{ Win_User }}"
     state: query
   register: final_result
   when: ansible_windows_domain_member == "false"
 
 - name: "Validate the Domain user account existence."
   win_domain_user:
-    name: "{{ Win_Local_User }}"
+    name: "{{ Win_User }}"
     state: query
   register: final_result
   when: ansible_windows_domain_member != "false"
