@@ -8,5 +8,9 @@ Win_Shell_Module_Command: Get-Module
 Win_Shell_Module_Name: ActiveDirectory
 
 
-Win_Local_User: remotely
+Win_Local_User:
+Win_Domain_Path:
+Win_Pass:
+Win_Domain_User:
+Win_Domain_Pass:
 
