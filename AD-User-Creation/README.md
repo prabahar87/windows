@@ -36,3 +36,39 @@ Author Information
 ------------------
 
 An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+
+# AD-User-Creation
+
+## How to run the AD-User-Creation role.
+
+```
+ansible-playbook AD-User-Creation.yml
+or
+ansible-playbook AD-User-Creation.yml -vvv <<Verbose Mode>>
+```
+
+## Varibale Name
+It's under the AD-User-Creation role and u can find the vars folder over here.
+
+| Variable | Variable_Values |
+| ------ | ------ |
+| Win_Package_Name| RSAT-AD-PowerShell |
+| Win_State| present|
+| Win_Shell_Module_Command | Get-Module |
+| Win_Shell_Module_Name | ActiveDirectory |
+| Win_User| << Username >> |
+| Win_Domain_Path | << Domain Path >> |
+| Win_Pass| << Password For User Name >> |
+| Win_Domain_User | << Athuorised User Name >> |
+| Win_Domain_Pass | << Athuorised User Password >> |
+
+## ActiveDirectory.yml
+```
+---
+- hosts: win << Define the HostGroup Name Here >>
+  gather_facts: true << It should be true only. Because we used ansible facts inside the playbook >>
+  roles:
+      - AD-User-Creation
+```
+
