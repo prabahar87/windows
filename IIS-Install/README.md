@@ -36,3 +36,24 @@ Author Information
 ------------------
 
 An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+
+# IIS-Install
+
+## How to run the IIS-Install role.
+
+```
+ansible-playbook IIS-Install.yml
+or
+ansible-playbook IIS-Install.yml -vvv <<Verbose Mode>>
+```
+
+## IIS-Install.yml
+```
+---
+- hosts: win << Define the HostGroup Name Here >>
+  gather_facts: true << It should be true only. Because we used ansible facts inside the playbook >>
+  roles:
+      - IIS-Install
+```
+
