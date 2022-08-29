@@ -1,0 +1,4 @@
+- hosts: win 
+  gather_facts: true 
+  roles:
+      - Dot-Net-Installation

@@ -1,0 +1,39 @@
+---
+- name: "Check .NET version."
+  win_reg_stat:
+    path: "{{ Win_DotNet_Path }}"
+    name: "Version"
+  register: reg_val
+
+- name: "Validate if the computer is having Dot Net FrameWork or not."
+  debug:
+    msg: |
+      {% if reg_val.exists == 'False' %}
+      Dot Net Framework Already Installed on this machine. V4 is available on here. 
+      {% else %}
+      Dot Net Framework is not Installed on this machine. V4 is not available on here.
+      {% endif %}
+
+- name: Install .Net 3.5
+  win_optional_feature:
+    name: "{{ Win_DotNet_Name }}"
+    source: 
+      state: present
+  when: reg_val.exists == False
+
+- name: "Check .NET version."
+  win_reg_stat:
+    path: "{{ Win_DotNet_Path }}"
+    name: "Version"
+  register: reg_val
+
+- name: "Validate if the computer is having Dot Net FrameWork or not."
+  debug:
+    msg: |
+      {% if reg_val.exists == 'True' %}
+      We have successfully installed the Dot Net FrameWork. 
+      {% else %}
+      We haven't installed the Framework. Please Check with administrator.
+      {% endif %}
+  when: reg_val.exists == True
+
