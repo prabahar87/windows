@@ -32,22 +32,22 @@
     state: present
     physical_path: "{{ virtual_physical_path }}"
 
-# - name: "Website https biding to specific port"
-#   win_iis_webbinding:
-#     name: "{{ website_name }}"
-#     protocol: https
-#     port: 443
-#     certificate_hash: "{{ certificate }}"
-#     ssl_flags: 1
-#     state: present
-#     certificate_store_name: no
+- name: "Website https biding to specific port"
+  win_iis_webbinding:
+    name: "{{ website_name }}"
+    protocol: https
+    port: 443
+    certificate_hash: "{{ certificate }}"
+    ssl_flags: 1
+    state: present
+    certificate_store_name: no
 
-# - name: "Import certificate be used by IIS"
-#   win_certificate_store:
-#     path: "{{ certificate_path }}"
-#     file_type: "{{ certificate_file_type }}"
-#     password: "{{ certificate_password }}"
-#     store_location: LocalMachine
-#     store_name: "{{ certificate_store_name }}"
-#     key_storage: machine
-#     state: present
+- name: "Import certificate be used by IIS"
+  win_certificate_store:
+    path: "{{ certificate_path }}"
+    file_type: "{{ certificate_file_type }}"
+    password: "{{ certificate_password }}"
+    store_location: LocalMachine
+    store_name: "{{ certificate_store_name }}"
+    key_storage: machine
+    state: present
