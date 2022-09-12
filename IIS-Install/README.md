@@ -57,6 +57,24 @@ ansible-playbook IIS-Install.yml -vvv <<Verbose Mode>>
       - IIS-Install
 ```
 
+| Variable | Variable_Values |
+| ------ | ------ |
+| website_name| example |
+| website_port| 80 |
+| app_pool_name | example |
+| website_physicalpath | C:\\example\\com |
+| website_logpath| C:\\example\\logs |
+| application_name | example |
+| virtual_physical_path | C:\\example\\ |
+| app_physical_path | C:\\example |
+| app_name | example |
+| certificate | << certificate >> |
+| certificate_path | << certificate_path >> |
+| certificate_file_type | << certificate_file_type >> |
+| certificate_password | << certificate_password >> |
+| certificate_store_name | << certificate_store_name >> |
+
+
 ## Test Results
 ```
 rabhu@ubuntu:~/git/windows_freelance/windows$ ansible-playbook IIS-Install.yml
