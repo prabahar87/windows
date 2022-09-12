@@ -14,14 +14,14 @@
         name: "{{ Win_User }}"
         state: query
       register: user_status
-      when: ansible_windows_domain_member == "false"
+      when: ansible_windows_domain == "WORKGROUP"
 
     - name: "Validate the Domain user account existence."
       win_domain_user:
         name: "{{ Win_User }}"
         state: query
       register: user_status
-      when: ansible_windows_domain_member != "false"
+      when: ansible_windows_domain != "WORKGROUP"
 
     - name: "Error Handler for Failure/Success event - queried user do not exist."
       debug:
@@ -32,6 +32,21 @@
            User do not exist. Creating the user account..!
            {% endif %}
 
+- name: "Validate the Domain user account existence."
+  win_domain_user:
+    name: "{{ Win_User }}"
+    state: query
+  register: user_status
+  when: ansible_windows_domain != "WORKGROUP"
+
+- name: setfact
+  set_fact:
+    fact_collection: |
+        {% if ansible_windows_domain_member == 'false' or ansible_windows_domain == "WORKGROUP" %}
+        "false"
+        {% else %}
+        "true"
+        {% endif %}
 
 - name: "Creating the Domain User Account."
   win_domain_user:
@@ -43,17 +58,18 @@
     domain_password: "{{ Win_Domain_Pass }}"
     enabled: yes
     password_never_expires: yes
-    upn: {{ Win_Local_User }}@{{ ansible_windows_domain }}
+    upn: "{{ Win_Local_User }}@{{ ansible_windows_domain }}"
     state: present
-  when: user_status.state != "present"
+  when: fact_collection == "true"
+#    - (ansible_windows_domain != "WORKGROUP") or (user_status.state != "present")
 
 - name: "Creating the Local User Account."
   win_user:
     name: "{{ Win_User }}"
     state: present
-  when:
-    - user_status.state != "present"
-    - ansible_windows_domain_member == "false"
+  when: fact_collection != "true"
+  #  - user_status.state != "present"
+  #  - ansible_windows_domain_member == "false"
 
 - name: "Validate the Local user account existence."
   win_user:
@@ -67,7 +83,7 @@
     name: "{{ Win_User }}"
     state: query
   register: final_result
-  when: ansible_windows_domain_member != "false"
+  when: ansible_windows_domain != "WORKGROUP"
 
 - name: "Error Handler for Failure/Success event - queried user do not exist."
   debug:
