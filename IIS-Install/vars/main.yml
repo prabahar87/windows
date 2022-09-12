@@ -1,2 +1,17 @@
 ---
 # vars file for IIS-Install
+website_name: 
+website_port: 
+app_pool_name: 
+website_physicalpath: 
+website_logpath: 
+site_virtualdirectory_name: 
+application_name: 
+virtual_physical_path: 
+app_physical_path: 
+app_name: acme
+certificate: 
+certificate_path:
+certificate_file_type:
+certificate_password:
+certificate_store_name:

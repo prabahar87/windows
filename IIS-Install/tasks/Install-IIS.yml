@@ -7,7 +7,7 @@
 - name: "Error Handler Success/Failure Event for IIS-Service."
   debug:
     msg: |
-      {% if "{{ service_info.exists }}" == 'false' %}
+      {% if "{{ service_info.exists }}" == "false" %}
       IIS-Service is not installed. Enabling the feature...
       {% else %}
       IIS-Service already exists..!
@@ -19,13 +19,12 @@
     state: present
     include_sub_features: True
     include_management_tools: True
-  register: win_feature
-  when: service_info.exists != "false"
+  register: win_web_server
 
 - name: "Error Handler Success/Failure Event for IIS installation."
   debug:
     msg: |
-      {% if "{{ win_feature.state }}" == 'running' %}
+      {% if "{{ win_web_server.success }}" != "true" %}
       IIS is succeessfully installed..!
       {% else %}
       IIS installation failed.
