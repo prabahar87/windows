@@ -9,7 +9,7 @@ site_virtualdirectory_name:
 application_name: 
 virtual_physical_path: 
 app_physical_path: 
-app_name: acme
+app_name: 
 certificate: 
 certificate_path:
 certificate_file_type:
