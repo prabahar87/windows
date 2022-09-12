@@ -14,7 +14,7 @@
       Dot Net Framework is not Installed on this machine. V4 is not available on here.
       {% endif %}
 
-- name: Install .Net 3.5
+- name: "Install .Net 3.5"
   win_optional_feature:
     name: "{{ Win_DotNet_Name }}"
     source: 

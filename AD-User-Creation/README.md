@@ -72,3 +72,56 @@ It's under the AD-User-Creation role and u can find the vars folder over here.
       - AD-User-Creation
 ```
 
+
+## Test Results
+```
+prabhu@ubuntu:~/git/windows_freelance/windows$ ansible-playbook AD-User-Creation.yml
+
+PLAY [win] ********************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************
+ok: [192.168.1.102]
+
+TASK [AD-User-Creation : Validate if the computer is part of domain or workgroup.] ********************************************************************************************
+ok: [192.168.1.102] => {
+    "msg": "      This machine joined in - \"WORKGROUP\"\n"
+}
+
+TASK [AD-User-Creation : Validate the Local user account existence.] **********************************************************************************************************
+ok: [192.168.1.102]
+
+TASK [AD-User-Creation : Validate the Domain user account existence.] *********************************************************************************************************
+skipping: [192.168.1.102]
+
+TASK [AD-User-Creation : Error Handler for Failure/Success event - queried user do not exist.] ********************************************************************************
+ok: [192.168.1.102] => {
+    "msg": "User do not exist. Creating the user account..!\n"
+}
+
+TASK [AD-User-Creation : Validate the Domain user account existence.] *********************************************************************************************************
+skipping: [192.168.1.102]
+
+TASK [AD-User-Creation : setfact] *********************************************************************************************************************************************
+ok: [192.168.1.102]
+
+TASK [AD-User-Creation : Creating the Domain User Account.] *******************************************************************************************************************
+skipping: [192.168.1.102]
+
+TASK [AD-User-Creation : Creating the Local User Account.] ********************************************************************************************************************
+ok: [192.168.1.102]
+
+TASK [AD-User-Creation : Validate the Local user account existence.] **********************************************************************************************************
+skipping: [192.168.1.102]
+
+TASK [AD-User-Creation : Validate the Domain user account existence.] *********************************************************************************************************
+skipping: [192.168.1.102]
+
+TASK [AD-User-Creation : Error Handler for Failure/Success event - queried user do not exist.] ********************************************************************************
+ok: [192.168.1.102] => {
+    "msg": "User is created successfully...!\n"
+}
+
+PLAY RECAP ********************************************************************************************************************************************************************
+192.168.1.102              : ok=7    changed=0    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0 
+
+```
