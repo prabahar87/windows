@@ -36,3 +36,37 @@ Author Information
 ------------------
 
 An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+
+
+# VM Creation/Provisioning 
+
+## How to run the vmcreation role.
+
+```
+ansible-playbook vmcreation.yml
+or
+ansible-playbook vmcreation.yml -vvv <<Verbose Mode>>
+```
+
+## vmcreation.yml
+```
+---
+- hosts: win << Define the HostGroup Name Here >>
+  gather_facts: true << It should be true only. Because we used ansible facts inside the playbook >>
+  roles:
+      - vmcreation
+```
+## IIS-Installation Variable
+
+| Variable | Variable_Values |
+| ------ | ------ |
+| VCenter_Name | << VCenter_Name >> |
+| Vshere_user | << Vshere_user >> |
+| vsphere_password | << vsphere_password >> |
+| Datacenter_Name | << Datacenter_Name >> |
+| Cluster_Name | << Cluster_Name >> |
+| VM_Creation_Name | << VM_Creation_Name >> |
+| VM_Template_Name | << VM_Template_Name >> |
+| VCenter_Resource_pool_name | << VCenter_Resource_pool_name >> |
+
