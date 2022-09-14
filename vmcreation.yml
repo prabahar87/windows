@@ -1,0 +1,5 @@
+---
+- hosts: win
+  gather_facts: true
+  roles:
+      - vmcreation

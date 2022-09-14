@@ -1,0 +1,36 @@
+---
+- name: "Creating Server inside the V-Center"
+  vmware_guest:
+   hostname: "{{ VCenter_Name }}"
+   username: "{{ Vshere_user }}"
+   password: "{{ vsphere_password }}"
+   validate_certs: no
+   datacenter: "{{ Datacenter_Name }}"
+   cluster: "{{ Cluster_Name }}"
+   name: "{{ VM_Creation_Name }}"
+   template: "{{ VM_Template_Name }}"
+   state: poweredon
+   folder: "/TIER1/DEVELOPMENT"
+   resource_pool: "{{ VCenter_Resource_pool_name }}"
+   annotation: "VM Built by Ansible Automation."
+   hardware:
+     memory_gb: 8
+     num_cpus: 4
+     scsi: paravirtual
+   disk:
+   - size_gb: 60
+     type: thin
+     datastore: "{{ Data_Store_Name }}"
+   - size_gb: 40
+     type: thin
+     datastore: "{{ Data_Store_Name }}"
+   - size_gb: 50
+     type: thin
+     datastore: "{{ Data_Store_Name }}"
+   - size_gb: 5
+     type: thin
+     datastore: "{{ Data_Store_Name }}"
+   wait_for_ip_address: yes
+  tags: Create_VM
+  delegate_to: localhost
+  ignore_errors: true

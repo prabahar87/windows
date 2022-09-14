@@ -1,0 +1,10 @@
+---
+# vars file for vmcreation
+VCenter_Name: 
+Vshere_user: 
+vsphere_password:
+Datacenter_Name:
+Cluster_Name:
+VM_Creation_Name:
+VM_Template_Name:
+VCenter_Resource_pool_name:
